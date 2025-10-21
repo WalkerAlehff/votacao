@@ -4,6 +4,12 @@ let votos = {
     espirito: 0
 };
 
+// Senha correta
+const SENHA_CORRETA = 'movimentoinri';
+
+// Variável para armazenar qual ação está pendente
+let acaoPendente = null;
+
 // Carregar votos do localStorage se existirem
 function carregarVotos() {
     const votosArmazenados = localStorage.getItem('votos');
@@ -69,28 +75,38 @@ function atualizarInterface() {
 
 // Função para reiniciar votação
 function reiniciarVotacao() {
-    if (confirm('Tem certeza que deseja reiniciar a votação? Todos os votos serão perdidos.')) {
-        votos = {
-            sabarrab: 0,
-            espirito: 0
-        };
-        salvarVotos();
-        atualizarInterface();
-        
-        // Feedback visual
-        const resetBtn = document.querySelector('.reset-btn');
-        resetBtn.textContent = 'Votação Reiniciada!';
-        resetBtn.style.backgroundColor = '#28a745';
-        
-        setTimeout(() => {
-            resetBtn.textContent = 'Reiniciar Votação';
-            resetBtn.style.backgroundColor = '#dc3545';
-        }, 2000);
-    }
+    acaoPendente = 'reiniciar';
+    abrirModalSenha();
+}
+
+// Função para executar reinicialização após senha correta
+function executarReinicializacao() {
+    votos = {
+        sabarrab: 0,
+        espirito: 0
+    };
+    salvarVotos();
+    atualizarInterface();
+    
+    // Feedback visual
+    const resetBtn = document.querySelector('.reset-btn');
+    resetBtn.textContent = 'Votação Reiniciada!';
+    resetBtn.style.backgroundColor = '#28a745';
+    
+    setTimeout(() => {
+        resetBtn.textContent = 'Reiniciar Votação';
+        resetBtn.style.backgroundColor = '#dc3545';
+    }, 2000);
 }
 
 // Função para encerrar votação
 function encerrarVotacao() {
+    acaoPendente = 'encerrar';
+    abrirModalSenha();
+}
+
+// Função para executar encerramento após senha correta
+function executarEncerramento() {
     let totalVotos = votos.sabarrab + votos.espirito;
     
     // Garantir mínimo de 100.000 votos
@@ -154,6 +170,12 @@ function criarConfete() {
 
 // Função para reiniciar da tela de vitória
 function reiniciarDaVitoria() {
+    acaoPendente = 'reiniciarVitoria';
+    abrirModalSenha();
+}
+
+// Função para executar reinicialização da vitória após senha correta
+function executarReiniciarVitoria() {
     // Esconder tela de vitória
     document.getElementById('victory-screen').style.display = 'none';
     
@@ -166,7 +188,63 @@ function reiniciarDaVitoria() {
     atualizarInterface();
 }
 
+// Função para abrir modal de senha
+function abrirModalSenha() {
+    document.getElementById('password-modal').style.display = 'flex';
+    document.getElementById('password-input').value = '';
+    document.getElementById('password-error').textContent = '';
+    document.getElementById('password-input').focus();
+}
+
+// Função para fechar modal de senha
+function fecharModalSenha() {
+    document.getElementById('password-modal').style.display = 'none';
+    document.getElementById('password-input').value = '';
+    document.getElementById('password-error').textContent = '';
+    acaoPendente = null;
+}
+
+// Função para verificar senha
+function verificarSenha() {
+    const senhaDigitada = document.getElementById('password-input').value;
+    
+    if (senhaDigitada === SENHA_CORRETA) {
+        fecharModalSenha();
+        
+        // Executar a ação pendente
+        switch(acaoPendente) {
+            case 'reiniciar':
+                executarReinicializacao();
+                break;
+            case 'encerrar':
+                executarEncerramento();
+                break;
+            case 'reiniciarVitoria':
+                executarReiniciarVitoria();
+                break;
+        }
+    } else {
+        document.getElementById('password-error').textContent = 'Senha incorreta!';
+        document.getElementById('password-input').value = '';
+        document.getElementById('password-input').focus();
+    }
+}
+
 // Carregar votos ao iniciar a página
 document.addEventListener('DOMContentLoaded', () => {
     carregarVotos();
+    
+    // Adicionar evento de Enter no campo de senha
+    document.getElementById('password-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            verificarSenha();
+        }
+    });
+    
+    // Fechar modal ao clicar fora dele
+    document.getElementById('password-modal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('password-modal')) {
+            fecharModalSenha();
+        }
+    });
 });

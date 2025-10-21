@@ -90,6 +90,19 @@
         </div>
     </div>
 
+    <!-- Modal de Senha -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-modal-content">
+            <h3>Digite a senha para continuar</h3>
+            <input type="password" id="password-input" class="password-input" placeholder="Senha" autocomplete="off">
+            <div class="password-modal-buttons">
+                <button class="password-btn confirm-btn" onclick="verificarSenha()">Confirmar</button>
+                <button class="password-btn cancel-btn" onclick="fecharModalSenha()">Cancelar</button>
+            </div>
+            <div class="password-error" id="password-error"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
