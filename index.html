@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votação - Indulto de Fertilização</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="main-title">INDULTO DE FERTILIZAÇÃO</h1>
+            <p class="subtitle">Votem para garantir a liberdade do escolhido</p>
+        </header>
+
+        <main>
+            <div class="voting-section">
+                <div class="voting-buttons">
+                    <button class="vote-btn" id="sabarrab-btn" onclick="votar('sabarrab')">
+                        <span class="candidate-name">Sabarrab</span>
+                        <span class="vote-text">Votar</span>
+                    </button>
+                    <button class="vote-btn" id="espirito-btn" onclick="votar('espirito')">
+                        <span class="candidate-name">Espírito Santo</span>
+                        <span class="vote-text">Votar</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>Resultado da Votação</h2>
+                <div class="results-container">
+                    <div class="candidate-result">
+                        <div class="candidate-info">
+                            <span class="candidate-label">Sabarrab</span>
+                            <span class="percentage" id="sabarrab-percentage">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill sabarrab-fill" id="sabarrab-bar"></div>
+                        </div>
+                        <span class="vote-count" id="sabarrab-count">0 votos</span>
+                    </div>
+
+                    <div class="candidate-result">
+                        <div class="candidate-info">
+                            <span class="candidate-label">Espírito Santo</span>
+                            <span class="percentage" id="espirito-percentage">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill espirito-fill" id="espirito-bar"></div>
+                        </div>
+                        <span class="vote-count" id="espirito-count">0 votos</span>
+                    </div>
+                </div>
+
+                <div class="total-votes">
+                    <p>Total de votos: <span id="total-votes">0</span></p>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="end-voting-btn" onclick="encerrarVotacao()">
+                    Encerrar Votação
+                </button>
+                <button class="reset-btn" onclick="reiniciarVotacao()">
+                    Reiniciar Votação
+                </button>
+            </div>
+        </main>
+
+        <!-- Tela de Vitória -->
+        <div class="victory-screen" id="victory-screen" style="display: none;">
+            <div class="confetti-container" id="confetti-container"></div>
+            <div class="victory-content">
+                <h1 class="victory-title">🎉 VITÓRIA! 🎉</h1>
+                <div class="winner-announcement">
+                    <h2 class="winner-name">SABARRAB</h2>
+                    <p class="winner-percentage" id="winner-percentage">71.3%</p>
+                    <p class="winner-votes" id="winner-votes">dos votos</p>
+                </div>
+                <div class="congratulations-message">
+                    <p>Parabéns, Sabarrab!</p>
+                    <p>Você conquistou o indulto de fertilização!</p>
+                    <p class="celebration-emoji">🏆 🎊 🥳 🎊 🏆</p>
+                </div>
+                <button class="restart-btn" onclick="reiniciarDaVitoria()">
+                    Reiniciar Votação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
