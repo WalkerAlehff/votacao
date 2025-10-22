@@ -107,7 +107,9 @@ function encerrarVotacao() {
 
 // Função para executar encerramento após senha correta
 function executarEncerramento() {
+    console.log('Função executarEncerramento chamada!');
     let totalVotos = votos.sabarrab + votos.espirito;
+    console.log('Total de votos atual:', totalVotos);
     
     // Garantir mínimo de 100.000 votos
     const votosMinimos = 100000;
@@ -133,6 +135,9 @@ function executarEncerramento() {
     // Salvar votos ajustados
     salvarVotos();
     
+    // Atualizar a interface principal primeiro
+    atualizarInterface();
+    
     // Calcular porcentagem final
     const totalFinal = votos.sabarrab + votos.espirito;
     const porcentagemFinal = ((votos.sabarrab / totalFinal) * 100).toFixed(1);
@@ -141,11 +146,14 @@ function executarEncerramento() {
     document.getElementById('winner-percentage').textContent = porcentagemFinal + '%';
     document.getElementById('winner-votes').textContent = votos.sabarrab + ' de ' + totalFinal + ' votos';
     
-    // Mostrar tela de vitória
-    document.getElementById('victory-screen').style.display = 'flex';
-    
-    // Criar confete
-    criarConfete();
+    // Pequeno delay para garantir que tudo foi atualizado
+    setTimeout(() => {
+        // Mostrar tela de vitória
+        document.getElementById('victory-screen').style.display = 'flex';
+        
+        // Criar confete
+        criarConfete();
+    }, 100);
 }
 
 // Função para criar efeito de confete
@@ -208,7 +216,11 @@ function fecharModalSenha() {
 function verificarSenha() {
     const senhaDigitada = document.getElementById('password-input').value;
     
+    console.log('Verificando senha:', senhaDigitada);
+    console.log('Ação pendente:', acaoPendente);
+    
     if (senhaDigitada === SENHA_CORRETA) {
+        console.log('Senha correta! Executando ação:', acaoPendente);
         fecharModalSenha();
         
         // Executar a ação pendente
@@ -217,6 +229,7 @@ function verificarSenha() {
                 executarReinicializacao();
                 break;
             case 'encerrar':
+                console.log('Executando encerramento...');
                 executarEncerramento();
                 break;
             case 'reiniciarVitoria':
