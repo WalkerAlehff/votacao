@@ -221,21 +221,27 @@ function verificarSenha() {
     
     if (senhaDigitada === SENHA_CORRETA) {
         console.log('Senha correta! Executando ação:', acaoPendente);
+        
+        // Guardar a ação antes de fechar o modal
+        const acaoParaExecutar = acaoPendente;
+        
         fecharModalSenha();
         
-        // Executar a ação pendente
-        switch(acaoPendente) {
-            case 'reiniciar':
-                executarReinicializacao();
-                break;
-            case 'encerrar':
-                console.log('Executando encerramento...');
-                executarEncerramento();
-                break;
-            case 'reiniciarVitoria':
-                executarReiniciarVitoria();
-                break;
-        }
+        // Executar a ação pendente após fechar o modal
+        setTimeout(() => {
+            switch(acaoParaExecutar) {
+                case 'reiniciar':
+                    executarReinicializacao();
+                    break;
+                case 'encerrar':
+                    console.log('Executando encerramento...');
+                    executarEncerramento();
+                    break;
+                case 'reiniciarVitoria':
+                    executarReiniciarVitoria();
+                    break;
+            }
+        }, 50);
     } else {
         document.getElementById('password-error').textContent = 'Senha incorreta!';
         document.getElementById('password-input').value = '';
